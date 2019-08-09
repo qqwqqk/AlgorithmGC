@@ -1,6 +1,5 @@
 #include "gravitycoefficient.h"
 #include <cstdlib>
-#include <set>
 #include <math.h>
 using namespace std;
 
@@ -14,14 +13,14 @@ double calculationGravityCoefficient(vector<Edge> edges, char nodetype, int item
     if(node_id == item_i){ set_i.insert(node_tag); set_ij.insert(node_tag); }
     if(node_id == item_j){ set_j.insert(node_tag); set_ij.insert(node_tag); }
   }
-  double basepolymerization = 2.0 * ( set_i.size() + set_j.size() - set_ij.size()) / ( set_i.size() + set_j.size() );
-  return basepolymerization;
+  double gravitycoefficient = 2.0 * ( set_i.size() + set_j.size() - set_ij.size()) / ( set_i.size() + set_j.size() );
+  return gravitycoefficient;
 }
 
 double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, char nodetype, int item_i, int item_j){
   if(nodetype != 'A' && nodetype !='B'){ cout<<"Invalid node type input"<<endl; exit(1);}
   set<int> community_i, community_j;
-  set<int> sub_i, sub_j;
+  set<int> sub_i, sub_j, sub_ij;
   
   //缓存community_i,community_j所属节点
   for(map<int, Node>::iterator iter=nodes.begin(); iter != nodes.end(); iter++){
@@ -36,34 +35,35 @@ double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, ch
     const int node_id = nodetype == 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
     const int node_tag = nodetype == 'A' ? edges[i].getNodeB() : edges[i].getNodeA();
     if(community_i.find(node_id) != community_i.end()){ 
-      sub_i.insert(node_tag);
+      sub_i.insert(node_tag); sub_ij.insert(node_tag);
     }
     if(community_j.find(node_id) != community_j.end()){ 
-      sub_j.insert(node_tag); 
+      sub_j.insert(node_tag); sub_ij.insert(node_tag);
     }
   }
-
+  
   //calculation item of community
-  double dxy = 0, dx_y = 0, d_xy = 0;
+  vector<double> moleculeList, denominatorList;
   for(set<int>::iterator iter_i = sub_i.begin(); iter_i != sub_i.end(); iter_i++){
     const int item_id = *iter_i;
     if(sub_j.find(item_id) != sub_j.end()){
-      dxy = dxy + sqrt( 1.0 * sub_i.count(item_id) / communitynumber_i * sub_j.count(item_id) / communitynumber_j);
-    } else {
-      dx_y = dx_y + 1.0 * sub_i.count(item_id) / communitynumber_i;
+      moleculeList.push_back(1.0 * sub_i.count(item_id) / communitynumber_i);
+      moleculeList.push_back(1.0 * sub_j.count(item_id) / communitynumber_j);
+
+      //double sub_item = 2.0 * sqrt(1.0 * sub_i.count(item_id) / communitynumber_i * sub_j.count(item_id) / communitynumber_j);
+      //moleculeList.push_back(sub_item);
     }
+    denominatorList.push_back(1.0 * sub_i.count(item_id) / communitynumber_i);
   }
   for(set<int>::iterator iter_j = sub_j.begin(); iter_j != sub_j.end(); iter_j++){
     const int item_id = *iter_j;
-    if(sub_i.find(item_id) != sub_i.end()){
-      dxy = dxy + sqrt( 1.0 * sub_i.count(item_id) / communitynumber_i * sub_j.count(item_id) / communitynumber_j);
-    } else {
-      d_xy = d_xy + 1.0 * sub_j.count(item_id) / communitynumber_j;
-    }
+    denominatorList.push_back(1.0 * sub_j.count(item_id) / communitynumber_j);
   }
 
   //calculation community
-  double gravitycoefficient = dxy / ( dxy + dx_y + d_xy);
+  double molecule = accumulate(moleculeList.begin(), moleculeList.end(), 0.0);
+  double denominator = accumulate(denominatorList.begin(), denominatorList.end(), 0.0);
+  double gravitycoefficient = molecule / denominator;
 
   return gravitycoefficient;
 }
