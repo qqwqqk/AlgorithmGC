@@ -16,7 +16,10 @@
         "-o",
         "${workspaceFolder}/compile/main.exe"
       ],
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true                          // 设为false可做到一个tasks.json配置多个编译指令，需要自己修改本文件，我这里不多提
+      },
       "presentation": {
         // Reveal the output only if unrecognized errors occur.
         "reveal": "silent"
