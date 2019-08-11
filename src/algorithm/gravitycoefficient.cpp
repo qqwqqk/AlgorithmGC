@@ -50,8 +50,8 @@ double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, ch
       moleculeList.push_back(1.0 * sub_i.count(item_id) / communitynumber_i);
       moleculeList.push_back(1.0 * sub_j.count(item_id) / communitynumber_j);
 
-      //double sub_item = 2.0 * sqrt(1.0 * sub_i.count(item_id) / communitynumber_i * sub_j.count(item_id) / communitynumber_j);
-      //moleculeList.push_back(sub_item);
+      // double sub_item = 1.0 * sqrt(1.0 * sub_i.count(item_id) / communitynumber_i * sub_j.count(item_id) / communitynumber_j);
+      // moleculeList.push_back(sub_item);
     }
     denominatorList.push_back(1.0 * sub_i.count(item_id) / communitynumber_i);
   }
@@ -63,6 +63,7 @@ double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, ch
   //calculation community
   double molecule = accumulate(moleculeList.begin(), moleculeList.end(), 0.0);
   double denominator = accumulate(denominatorList.begin(), denominatorList.end(), 0.0);
+  //double factor = 1.0 * ( sub_i.size() + sub_j.size() - sub_ij.size()) / ( sub_ij.size() );
   double gravitycoefficient = molecule / denominator;
 
   return gravitycoefficient;
