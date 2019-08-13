@@ -12,23 +12,40 @@ int main()
   int number = 800;
   bool connected = true;
   bool sequence = true;
-  char nodetype = 'A';
+  char nodetype = 'B';
 
   Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
-  Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
+  Unipartite UnipartiteNetworkA = getUnipartite( name, intercept, number, connected, sequence, 'A');
+  Unipartite UnipartiteNetworkB = getUnipartite( name, intercept, number, connected, sequence, 'B');
 
-  const vector<Edge> bipartiteEdgeCache = BipartiteNetwork.getEdges();        //计算GC用二分网络原始边连接信息
-  const vector<Edge> unipartiteEdgeCache = UnipartiteNetwork.getEdges();      //计算模块度用投影网络边连接信息
+  vector<Edge> bipartiteEdgeCache = BipartiteNetwork.getEdges();        //计算GC用二分网络原始边连接信息
   
-  map<int,Node> nodeCache = UnipartiteNetwork.getNodes();                     //社区合并过程记录节点信息
-  vector<Link> linkCache;                                                     //社区合并过程记录连接信息
-  map<string, double> linkUpdate;                                             //单次合并过程更新的连接
+  vector<Edge> unipartiteEdgeCache;               //计算模块度用投影网络边连接信息
+  map<int,Node> nodeCache;                        //社区合并过程记录节点信息
+  map<int, set<int>> resultCache;                 //社区划分结果信息
+  
+  vector<Link> linkCache;                         //社区合并过程记录连接信息
+  map<string, double> linkUpdate;                 //单次合并过程更新的连接
+
+  //初始化一些定义
+  switch (nodetype){
+  case 'A':
+    unipartiteEdgeCache = UnipartiteNetworkB.getEdges();
+    nodeCache = UnipartiteNetworkB.getNodes();
+    break;
+  case 'B':
+    unipartiteEdgeCache = UnipartiteNetworkA.getEdges();
+    nodeCache = UnipartiteNetworkA.getNodes();
+    break;
+  default:
+    exit(1);
+  }
+
 
   //初始化 degree of nodeCache 与 bpi of linkCache
-  vector<Edge> initCache = UnipartiteNetwork.getEdges();  
-  for(int i=0; i<initCache.size(); i++){
-    int node_a = initCache[i].getNodeA();
-    int node_b = initCache[i].getNodeB();
+  for(int i=0; i<unipartiteEdgeCache.size(); i++){
+    int node_a = unipartiteEdgeCache[i].getNodeA();
+    int node_b = unipartiteEdgeCache[i].getNodeB();
 
     nodeCache[node_a].addDegree();
     nodeCache[node_b].addDegree();
@@ -87,7 +104,11 @@ int main()
     printProgress(modularityCache.size() - 1, communityNumber, modularity);     //输出合并进度
   }
 
-  printCommunity(modularityCache, nodeCache, name, intercept, number, connected, sequence, nodetype);                                   //输出社区划分结果
+  //printCommunity(modularityCache, nodeCache, name, intercept, number, connected, sequence, nodetype == 'A' ? 'B':'A');                                   //输出社区划分结果
+
+  resultCache = calculationResult(modularityCache, nodeCache, bipartiteEdgeCache, nodetype);
+
+  printResult(resultCache);
 
   return 0;
 }

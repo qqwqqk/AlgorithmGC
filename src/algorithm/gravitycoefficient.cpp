@@ -7,8 +7,8 @@ double calculationGravityCoefficient(vector<Edge> edges, char nodetype, int item
   if(nodetype != 'A' && nodetype !='B'){ cout<<"Invalid node type input"<<endl; exit(1);}
   set<int> set_i, set_j, set_ij;
   for(int i=0; i<edges.size(); i++){
-    const int node_id = nodetype == 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
-    const int node_tag = nodetype == 'A' ? edges[i].getNodeB() : edges[i].getNodeA();
+    const int node_id = nodetype != 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
+    const int node_tag = nodetype != 'A' ? edges[i].getNodeB() : edges[i].getNodeA();
 
     if(node_id == item_i){ set_i.insert(node_tag); set_ij.insert(node_tag); }
     if(node_id == item_j){ set_j.insert(node_tag); set_ij.insert(node_tag); }
@@ -32,8 +32,8 @@ double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, ch
 
   //缓存sub_i,sub_j
   for(int i=0; i<edges.size(); i++){
-    const int node_id = nodetype == 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
-    const int node_tag = nodetype == 'A' ? edges[i].getNodeB() : edges[i].getNodeA();
+    const int node_id = nodetype != 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
+    const int node_tag = nodetype != 'A' ? edges[i].getNodeB() : edges[i].getNodeA();
     if(community_i.find(node_id) != community_i.end()){ 
       sub_i.insert(node_tag); sub_ij.insert(node_tag);
     }
@@ -132,4 +132,41 @@ int calculationCommunityNumber(map<int,Node> nodes){
   }
 
   return communityCache.size();
+}
+
+map<int, set<int>> calculationResult(vector<double> modularityCache, map<int,Node> nodes, vector<Edge> edges, char nodetype){
+  if(nodetype != 'A' && nodetype !='B'){ cout<<"Invalid node type input"<<endl; exit(1);}
+  map<int, set<int>> communityCache;
+  map<int, set<int>> resultCache;
+
+  vector<double>::iterator modularityMax = std::max_element(begin(modularityCache), end(modularityCache));
+  int modularityIndex = distance(begin(modularityCache), modularityMax);
+
+  for(map<int, Node>::iterator iter_node = nodes.begin(); iter_node != nodes.end(); iter_node++){
+    int communityTag = iter_node->second.getCommunityTag(modularityIndex);
+    map<int, set<int>>::iterator iter_result = communityCache.find(communityTag);
+    if(iter_result == communityCache.end()){
+      set<int> cache = {iter_node->first};
+      communityCache.insert(pair<int, set<int>> (communityTag, cache));
+    } else {
+      iter_result->second.insert(iter_node->first);
+    }
+  }
+
+  for(map<int, set<int>>::iterator iter_tag = communityCache.begin(); iter_tag != communityCache.end(); iter_tag++){
+    int communityID = iter_tag->first;
+    set<int> tempCache;
+
+    for(int i=0; i<edges.size();i++){
+      int source = nodetype != 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
+      int target = nodetype == 'A' ? edges[i].getNodeA() : edges[i].getNodeB();
+      if(iter_tag->second.find(source) != iter_tag->second.end()){
+        tempCache.insert(target);
+      }
+    }
+
+    resultCache.insert(pair<int, set<int>> (communityID, tempCache));
+  }
+
+  return resultCache;
 }

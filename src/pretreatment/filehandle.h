@@ -53,3 +53,7 @@ void printCommunity(
   bool rank = false,
   char nodetype = 'A'
 );
+
+void printResult(
+  map<int, set<int>> result
+);

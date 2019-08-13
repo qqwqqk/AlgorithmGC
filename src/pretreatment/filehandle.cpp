@@ -2,7 +2,6 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
-#include <set>
 using namespace std;
 
 Bipartite getBipartite(string name, char intercept, int number, bool connected, bool sequence){
@@ -575,4 +574,15 @@ void printCommunity(vector<double> modularityCache, map<int,Node> nodeCache,stri
   outfile.close();
 
   cout << "\nmodularityMax:\t" << *modularityMax << "\tcommunityNumber:\t" << communityCache.size() << endl;
+}
+
+void printResult(map<int, set<int>> result){
+  for(map<int, set<int>>::iterator iter = result.begin(); iter!=result.end();iter++){
+    cout<< iter->first <<":\t";
+    for(set<int>::iterator temp = iter->second.begin(); temp != iter->second.end(); temp++){
+      const int cache = *temp;
+      cout<< ' '<< cache;
+    }
+    cout<< endl;
+  }
 }
