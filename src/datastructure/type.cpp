@@ -33,6 +33,9 @@ void Node::setDegree(int degree){
 void Node::addListTag(int tag){
   _subjection.push_back(tag);
 }
+void Node::clrListTag(){
+  _subjection.clear();
+}
 
 //边类型基本的定义
 Edge::Edge(int a, int b){

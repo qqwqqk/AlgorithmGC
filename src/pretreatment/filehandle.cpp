@@ -542,6 +542,65 @@ Unipartite pretreatmentUnipartite(string name, char intercept, int number, bool 
   return unipartiteNetwork;
 }
 
+map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool connected, bool sequence, char nodetype){
+  const string split = "_";
+  const string _intercept(1, intercept);
+  const string _number = number > 0 ? to_string(number) : "0";
+  const string _connected = connected ? "C" : "UC";
+  const string _sequence = sequence ? "S" : "US";
+  const string _nodetype(1, nodetype);
+  const string resultpath = "resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+
+  ifstream infile;
+  string line;
+  const char dilem1 = ':';
+  const char dilem2 = ' ';
+  map<int, Node> communityCache;
+  map<int, Node>::iterator iter;
+
+  //按行读取TXT文件，并解析
+  infile.open(resultpath, ios::in);
+  if(!infile){ 
+    cout<< "file open error!" <<endl;
+    exit(1);
+  }
+
+  while(!infile.eof()){
+    getline(infile, line);
+    int linePos = 0;
+    int lineSize = 0;
+    string cache;
+    vector<int> array;
+
+    for(int i = 0 ; i < line.size(); i++){
+      if(line[i] == dilem1 || line[i] == dilem2){
+        lineSize = i - linePos;
+        cache = line.substr(linePos, lineSize);
+        array.push_back(stoi(cache));
+        linePos = i+1;
+      }
+    }
+    cache = line.substr(linePos, line.size() - linePos);
+    if(cache.size()>0){ array.push_back(stoi(cache)); }
+
+    //记录两人种类型节点数量并将解析的内容写入边对象缓存
+    if(array.size() > 1){
+      iter = communityCache.find(array[0]);
+      if(iter == communityCache.end()){
+        Node item(array[0]);
+        item.clrListTag();
+        for(int i=1; i<array.size(); i++){
+          item.addListTag(array[i]);
+        }
+        communityCache.insert(pair<int,Node>(array[0],item));
+      }
+    }
+  }
+  infile.close();
+
+  return communityCache;
+}
+
 void printProgress(int iterationNumber, int communityNumber, double modularity){
   cout << "IterationNumber:" << setw(4) << iterationNumber << '\t';
   cout << "CommunityNumber:" << setw(4) << communityNumber << '\t';

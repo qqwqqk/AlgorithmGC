@@ -27,6 +27,7 @@ class Node{
     void addDegree();
     void setDegree(int degree = -1);
     void addListTag(int tag = -1);
+    void clrListTag();
 };
 
 class Edge{

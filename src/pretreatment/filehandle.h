@@ -8,7 +8,7 @@ Bipartite getBipartite(
   char intercept = 'A', 
   int number = -1, 
   bool connected = false, 
-  bool rank = false
+  bool sequence = false
 );
 
 Bipartite pretreatmentBipartite(
@@ -16,7 +16,7 @@ Bipartite pretreatmentBipartite(
   char intercept = 'A', 
   int number = -1, 
   bool connected = false, 
-  bool rank = false
+  bool sequence = false
 );
 
 Unipartite getUnipartite(
@@ -24,7 +24,7 @@ Unipartite getUnipartite(
   char intercept = 'A', 
   int number = -1, 
   bool connected = false, 
-  bool rank = false,
+  bool sequence = false,
   char nodetype = 'A'
 );
 
@@ -33,7 +33,16 @@ Unipartite pretreatmentUnipartite(
   char intercept = 'A', 
   int number = -1, 
   bool connected = false, 
-  bool rank = false,
+  bool sequence = false,
+  char nodetype = 'A'
+);
+
+map<int,Node> getOverlapCommunity(
+  string name,
+  char intercept = 'A', 
+  int number = -1, 
+  bool connected = false, 
+  bool sequence = false,
   char nodetype = 'A'
 );
 
@@ -49,7 +58,7 @@ void printCommunity(
   char intercept = 'A', 
   int number = -1, 
   bool connected = false, 
-  bool rank = false,
+  bool sequence = false,
   char nodetype = 'A'
 );
 
