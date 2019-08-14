@@ -18,6 +18,7 @@ int main()
   map<int,Node> CommunityResult = getOverlapCommunity( name, intercept, number, connected, sequence, nodetype);
 
   double overlapModularity = calculationOverlapModularity(CommunityResult, UnipartiteNetwork.getEdges());
+  double extendModularity = calculationExtendModularity(CommunityResult, UnipartiteNetwork.getEdges());
 
   set<int> communityCache;
   for(map<int,Node>::iterator iter = CommunityResult.begin(); iter != CommunityResult.end(); iter++){
@@ -30,7 +31,10 @@ int main()
     cout<< endl;
   }
 
-  cout << "\nmodularityOverlap:\t" << overlapModularity << "\tcommunityNumber:\t" << communityCache.size() << endl;
+  cout << "\t communityNumber:\t" << communityCache.size();
+  cout << "\t extendModularity:\t" << extendModularity;
+  cout << "\t modularityOverlap:\t" << overlapModularity;
+  cout << endl;
 
 
   return 0;

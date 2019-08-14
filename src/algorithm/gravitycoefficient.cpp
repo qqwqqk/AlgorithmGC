@@ -152,6 +152,51 @@ double calculationOverlapModularity(map<int,Node> nodes, vector<Edge> edges){
   return modularity;
 }
 
+double calculationExtendModularity(map<int, Node> nodes, vector<Edge> edges){
+  const double edges_number = edges.size();
+  double item_edges = 0, community_edges = 0;
+  double item_nodes = 0, community_nodes = 0;
+
+  //初始节点度 计算边权
+  for(int i=0; i<edges_number; i++){
+    nodes.find(edges[i].getNodeA())->second.addDegree();
+    nodes.find(edges[i].getNodeB())->second.addDegree();
+
+    vector<int> community_a = nodes.find(edges[i].getNodeA())->second.getCommunityList();
+    vector<int> community_b = nodes.find(edges[i].getNodeB())->second.getCommunityList();
+    set<int> community_ab;
+
+    for(int i=0; i<community_a.size(); i++){ community_ab.insert(community_a[i]); }
+    for(int i=0; i<community_b.size(); i++){ community_ab.insert(community_b[i]); }
+
+    if(community_a.size() + community_b.size() > community_ab.size()){
+      item_edges = 1.0 / community_a.size() / community_b.size();
+      community_edges = community_edges + item_edges; 
+    }
+  }
+
+  //计算节点权
+  for(map<int,Node>::iterator node_i = nodes.begin(); node_i != nodes.end(); node_i++ ){
+    for(map<int,Node>::iterator node_j = nodes.begin(); node_j != nodes.end(); node_j++ ){
+      vector<int> community_a = node_i->second.getCommunityList();
+      vector<int> community_b = node_j->second.getCommunityList();
+      set<int> community_ab;
+
+      for(int i=0; i<community_a.size(); i++){ community_ab.insert(community_a[i]); }
+      for(int i=0; i<community_b.size(); i++){ community_ab.insert(community_b[i]); }
+
+      if(community_a.size() + community_b.size() > community_ab.size()){
+        item_nodes = 0.5 / edges_number * node_i->second.getDegree() / community_a.size() * node_j->second.getDegree() / community_b.size();
+        community_nodes = community_nodes + item_nodes; 
+      }
+    }
+  }
+
+  double modularity = 0.5 / edges_number * (2 * community_edges - community_nodes);
+
+  return modularity;
+}
+
 map<int, int> calculationMergeList(vector<Link> links){
   map<int,int> mergeList;
   double gravityMax = 0;
