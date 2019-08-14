@@ -548,32 +548,33 @@ void printProgress(int iterationNumber, int communityNumber, double modularity){
   cout << "Modularity:" << setw(9) << setiosflags(ios::fixed) << setprecision(5) << modularity << '\t' << endl;
 }
 
-void printCommunity(vector<double> modularityCache, map<int,Node> nodeCache,string name, char intercept, int number, bool connected, bool sequence, char nodetype){
+void printCommunity(map<int,Node> nodeCache, string name, char intercept, int number, bool connected, bool sequence, char nodetype){
   const string split = "_";
   const string _intercept(1, intercept);
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "resultdata/" + name + "_Result" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string resultpath = "resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   set<int> communityCache;
   //写入Bipartite，并输出到TXT文件
   ofstream outfile( resultpath , ios::out);
   if(!outfile){ cout<<"file open error!"<<endl; exit(1); } 
 
-  vector<double>::iterator modularityMax = std::max_element(begin(modularityCache), end(modularityCache));
-  int modularityIndex = distance(begin(modularityCache), modularityMax);
-
-  for(map<int, Node>::iterator iter_node = nodeCache.begin(); iter_node != nodeCache.end(); iter_node++){
-    int communityTag = iter_node->second.getCommunityTag(modularityIndex);
-    communityCache.insert(communityTag);
-    outfile << iter_node->first << '\t' << communityTag << '\n';
+  for(map<int, Node>::iterator iter = nodeCache.begin(); iter!=nodeCache.end();iter++){
+    outfile << iter->first <<":\t";
+    vector<int> print = iter->second.getCommunityList();
+    for(int i=0; i<print.size(); i++){
+      outfile<< print[i] << ' ';
+      communityCache.insert(print[i]);
+    }
+    outfile << '\n';
   }
 
   outfile.close();
 
-  cout << "\nmodularityMax:\t" << *modularityMax << "\tcommunityNumber:\t" << communityCache.size() << endl;
+  cout << "communityNumber:\t" << communityCache.size() << endl;
 }
 
 void printResult(map<int, Node> resultCache, double resultModularity){

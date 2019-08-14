@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_MC";
+  string name = "Metadata_AC";
   char intercept = 'B'; 
   int number = 800;
   bool connected = true;
@@ -107,13 +107,11 @@ int main()
     printProgress(modularityCache.size() - 1, communityNumber, modularity);     //输出合并进度
   }
 
-  //printCommunity(modularityCache, nodeCache, name, intercept, number, connected, sequence, nodetype == 'A' ? 'B':'A');                                   //输出社区划分结果
-
   resultCache = calculationResult(modularityCache, nodeCache, bipartiteEdgeCache, nodetype);
 
-  double overlapModularity = calculationOverlapModularity(resultCache, resultEdgeCache);
+  printCommunity(resultCache, name, intercept, number, connected, sequence, nodetype == 'A' ? 'B':'A');                                   //输出社区划分结果
 
-  printResult(resultCache, overlapModularity);
+  //double overlapModularity = calculationOverlapModularity(resultCache, resultEdgeCache);
 
   return 0;
 }

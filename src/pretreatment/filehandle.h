@@ -44,7 +44,6 @@ void printProgress(
 );
 
 void printCommunity(
-  vector<double> modularityCache,
   map<int,Node> nodeCache,
   string name, 
   char intercept = 'A', 
