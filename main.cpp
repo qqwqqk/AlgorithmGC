@@ -12,7 +12,7 @@ int main()
   int number = 800;
   bool connected = true;
   bool sequence = true;
-  char nodetype = 'B';
+  char nodetype = 'A';
 
   Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
   Unipartite UnipartiteNetworkA = getUnipartite( name, intercept, number, connected, sequence, 'A');
@@ -21,8 +21,9 @@ int main()
   vector<Edge> bipartiteEdgeCache = BipartiteNetwork.getEdges();        //计算GC用二分网络原始边连接信息
   
   vector<Edge> unipartiteEdgeCache;               //计算模块度用投影网络边连接信息
+  vector<Edge> resultEdgeCache;                   //计算重叠模块度用投影网络边连接信息
   map<int,Node> nodeCache;                        //社区合并过程记录节点信息
-  map<int, set<int>> resultCache;                 //社区划分结果信息
+  map<int,Node> resultCache;                      //社区划分结果信息
   
   vector<Link> linkCache;                         //社区合并过程记录连接信息
   map<string, double> linkUpdate;                 //单次合并过程更新的连接
@@ -30,10 +31,12 @@ int main()
   //初始化一些定义
   switch (nodetype){
   case 'A':
+    resultEdgeCache = UnipartiteNetworkA.getEdges();
     unipartiteEdgeCache = UnipartiteNetworkB.getEdges();
     nodeCache = UnipartiteNetworkB.getNodes();
     break;
   case 'B':
+    resultEdgeCache = UnipartiteNetworkB.getEdges();
     unipartiteEdgeCache = UnipartiteNetworkA.getEdges();
     nodeCache = UnipartiteNetworkA.getNodes();
     break;
@@ -108,7 +111,9 @@ int main()
 
   resultCache = calculationResult(modularityCache, nodeCache, bipartiteEdgeCache, nodetype);
 
-  printResult(resultCache);
+  double overlapModularity = calculationOverlapModularity(resultCache, resultEdgeCache);
+
+  printResult(resultCache, overlapModularity);
 
   return 0;
 }

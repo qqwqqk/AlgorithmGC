@@ -55,5 +55,6 @@ void printCommunity(
 );
 
 void printResult(
-  map<int, set<int>> result
+  map<int, Node> resultCache,
+  double resultModularity
 );

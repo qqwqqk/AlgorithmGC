@@ -576,13 +576,17 @@ void printCommunity(vector<double> modularityCache, map<int,Node> nodeCache,stri
   cout << "\nmodularityMax:\t" << *modularityMax << "\tcommunityNumber:\t" << communityCache.size() << endl;
 }
 
-void printResult(map<int, set<int>> result){
-  for(map<int, set<int>>::iterator iter = result.begin(); iter!=result.end();iter++){
+void printResult(map<int, Node> resultCache, double resultModularity){
+  set<int> communityCache;
+  for(map<int, Node>::iterator iter = resultCache.begin(); iter!=resultCache.end();iter++){
     cout<< iter->first <<":\t";
-    for(set<int>::iterator temp = iter->second.begin(); temp != iter->second.end(); temp++){
-      const int cache = *temp;
-      cout<< ' '<< cache;
+    vector<int> print = iter->second.getCommunityList();
+    for(int i=0; i<print.size(); i++){
+      cout<< print[i] << ' ';
+      communityCache.insert(print[i]);
     }
     cout<< endl;
   }
+
+  cout << "\nmodularityOverlap:\t" << resultModularity << "\tcommunityNumber:\t" << communityCache.size() << endl;
 }

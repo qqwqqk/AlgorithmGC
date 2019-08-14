@@ -14,6 +14,9 @@ int Node::getID(){
 int Node::getDegree(){
   return _degree;
 }
+vector<int> Node::getCommunityList(){
+  return _subjection;
+}
 int Node::getCommunityTag(int index){
   if(index >= 0 && index < _subjection.size()){
     return _subjection[index];

@@ -22,6 +22,7 @@ class Node{
     ~Node(){};
     int getID();
     int getDegree();
+    vector<int> getCommunityList();
     int getCommunityTag(int index = -1);
     void addDegree();
     void setDegree(int degree = -1);

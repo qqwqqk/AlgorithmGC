@@ -9,8 +9,10 @@ double calculationGravityCoefficient(map<int,Node> nodes, vector<Edge> edges, ch
 
 double calculationModularity(map<int,Node> nodes, vector<Edge> edges);
 
+double calculationOverlapModularity(map<int, Node> nodes, vector<Edge> edges);
+
 map<int, int> calculationMergeList(vector<Link> links);
 
 int calculationCommunityNumber(map<int,Node> nodes);
 
-map<int, set<int>> calculationResult(vector<double> modularityCache, map<int,Node> nodes, vector<Edge> edges, char nodetype); 
+map<int, Node> calculationResult(vector<double> modularityCache, map<int,Node> nodes, vector<Edge> edges, char nodetype); 
