@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_AC";
+  string name = "Metadata_MC";
   char intercept = 'B'; 
   int number = 800;
   bool connected = true;
@@ -109,7 +109,7 @@ int main()
 
   resultCache = calculationResult(modularityCache, nodeCache, bipartiteEdgeCache, nodetype);
 
-  printCommunity(resultCache, name, intercept, number, connected, sequence, nodetype == 'A' ? 'B':'A');                                   //输出社区划分结果
+  printCommunity(resultCache, name, intercept, number, connected, sequence, nodetype);                                   //输出社区划分结果
 
   //double overlapModularity = calculationOverlapModularity(resultCache, resultEdgeCache);
 
