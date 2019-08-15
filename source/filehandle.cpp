@@ -1,4 +1,4 @@
-#include "filehandle.h"
+#include "../header/filehandle.h"
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
@@ -10,7 +10,7 @@ Bipartite getBipartite(string name, char intercept, int number, bool connected, 
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -90,8 +90,8 @@ Bipartite pretreatmentBipartite(string name, char intercept, int number, bool co
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string metapath = "metadata/" + name + ".txt";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string metapath = "dataset/metadata/" + name + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -369,7 +369,7 @@ Unipartite getUnipartite(string name, char intercept, int number, bool connected
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -442,7 +442,7 @@ Unipartite pretreatmentUnipartite(string name, char intercept, int number, bool 
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   Bipartite bipartiteNetwork = getBipartite(name, intercept, number, connected, sequence);
   map<int,Node> bipartiteNodesA = bipartiteNetwork.getNodesA();
@@ -549,7 +549,7 @@ map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool 
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -601,12 +601,6 @@ map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool 
   return communityCache;
 }
 
-void printProgress(int iterationNumber, int communityNumber, double modularity){
-  cout << "IterationNumber:" << setw(4) << iterationNumber << '\t';
-  cout << "CommunityNumber:" << setw(4) << communityNumber << '\t';
-  cout << "Modularity:" << setw(9) << setiosflags(ios::fixed) << setprecision(5) << modularity << '\t' << endl;
-}
-
 void printCommunity(map<int,Node> nodeCache, string name, char intercept, int number, bool connected, bool sequence, char nodetype){
   const string split = "_";
   const string _intercept(1, intercept);
@@ -614,7 +608,7 @@ void printCommunity(map<int,Node> nodeCache, string name, char intercept, int nu
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   set<int> communityCache;
   //写入Bipartite，并输出到TXT文件
@@ -636,17 +630,4 @@ void printCommunity(map<int,Node> nodeCache, string name, char intercept, int nu
   cout << "communityNumber:\t" << communityCache.size() << endl;
 }
 
-void printResult(map<int, Node> resultCache, double resultModularity){
-  set<int> communityCache;
-  for(map<int, Node>::iterator iter = resultCache.begin(); iter!=resultCache.end();iter++){
-    cout<< iter->first <<":\t";
-    vector<int> print = iter->second.getCommunityList();
-    for(int i=0; i<print.size(); i++){
-      cout<< print[i] << ' ';
-      communityCache.insert(print[i]);
-    }
-    cout<< endl;
-  }
-
-  cout << "\nmodularityOverlap:\t" << resultModularity << "\tcommunityNumber:\t" << communityCache.size() << endl;
-}
+void printProgress(int iterationNumber = 0, int communityNumber = 0, double modularity = 0.0);

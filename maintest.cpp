@@ -1,7 +1,8 @@
 #include <iostream>
 #include <cstdlib>
-#include "src/pretreatment/filehandle.h"
-#include "src/algorithm/gravitycoefficient.h"
+#include "header/filehandle.h"
+#include "header/gravitycoefficient.h"
+#include "header/indicator.h"
 
 using namespace std;
 
@@ -17,10 +18,8 @@ int main()
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
   map<int,Node> CommunityResult = getOverlapCommunity( name, intercept, number, connected, sequence, nodetype);
 
-  double overlapModularity = calculationOverlapModularity(CommunityResult, UnipartiteNetwork.getEdges());
-  double extendModularity = calculationExtendModularity(CommunityResult, UnipartiteNetwork.getEdges());
-
   set<int> communityCache;
+  cout<<"community:"<<endl;
   for(map<int,Node>::iterator iter = CommunityResult.begin(); iter != CommunityResult.end(); iter++){
     cout<< iter->first<<":";
     vector<int> cache = iter->second.getCommunityList();
@@ -30,6 +29,11 @@ int main()
     }
     cout<< endl;
   }
+
+  cout<<"calculation overlap modularity:"<<endl;
+  double overlapModularity = calculationOverlapModularity(CommunityResult, UnipartiteNetwork.getEdges());
+  cout<<"calculation extend modularity:"<<endl;
+  double extendModularity = calculationExtendModularity(CommunityResult, UnipartiteNetwork.getEdges());
 
   cout << "\t communityNumber:\t" << communityCache.size();
   cout << "\t extendModularity:\t" << extendModularity;

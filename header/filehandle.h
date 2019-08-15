@@ -1,5 +1,5 @@
 #pragma once
-#include "../datastructure/type.h"
+#include "type.h"
 #include <iostream>
 using namespace std;
 
@@ -46,12 +46,6 @@ map<int,Node> getOverlapCommunity(
   char nodetype = 'A'
 );
 
-void printProgress(
-  int iterationNumber = 0, 
-  int communityNumber = 0, 
-  double modularity = 0.0
-);
-
 void printCommunity(
   map<int,Node> nodeCache,
   string name, 
@@ -60,9 +54,4 @@ void printCommunity(
   bool connected = false, 
   bool sequence = false,
   char nodetype = 'A'
-);
-
-void printResult(
-  map<int, Node> resultCache,
-  double resultModularity
 );

@@ -1,4 +1,4 @@
-#include "type.h"
+#include "../header/type.h"
 #include <string>
 using std::string;
 
