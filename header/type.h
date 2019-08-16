@@ -16,16 +16,19 @@ class Node{
   protected:
     int _id;
     int _degree;
-    vector<int> _subjection;
+    map<int,double> _tags;
+    map<int,double> _caches;
   public:
     Node(int id = -1);
     ~Node(){};
     int getID();
     int getDegree();
-    int getCommunityTag(int index = -1);
+    map<int,double> getTags();
+    map<int,double> getCaches();
     void addDegree();
-    void setDegree(int degree = -1);
-    void addListTag(int tag = -1);
+    void setTags(map<int,double> tags);
+    void clrCaches();
+    void addCaches(int tag, double proportion);
 };
 
 class Edge{

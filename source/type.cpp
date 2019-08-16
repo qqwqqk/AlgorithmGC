@@ -1,12 +1,12 @@
-#include "type.h"
+#include "../header/type.h"
 #include <string>
 using std::string;
 
 //节点类型基本的定义
 Node::Node(int id){
-  _id = id;
-  _degree = 0;
-  _subjection.push_back(id);
+  _id = id; _degree = 0;
+  map<int, double> temp;
+  _tags = temp; _caches = temp;
 }
 int Node::getID(){
   return _id;
@@ -14,21 +14,28 @@ int Node::getID(){
 int Node::getDegree(){
   return _degree;
 }
-int Node::getCommunityTag(int index){
-  if(index >= 0 && index < _subjection.size()){
-    return _subjection[index];
-  } else {
-    return _subjection.back();
-  }
-}
+map<int,double> Node::getTags(){
+  return _tags;
+};
+map<int,double> Node::getCaches(){
+  return _caches;
+};
 void Node::addDegree(){
   _degree = _degree + 1;
 }
-void Node::setDegree(int degree){
-  _degree = degree;
+void Node::setTags(map<int,double> tags){
+  _tags = tags;
 }
-void Node::addListTag(int tag){
-  _subjection.push_back(tag);
+void Node::clrCaches(){
+  _caches.clear();
+}
+void Node::addCaches(int tag, double proportion){
+  map<int,double>::iterator iter = _caches.find(tag);
+  if(iter == _caches.end()){
+    _caches.insert(pair<int,double>(tag,proportion));
+  } else {
+    iter->second = iter->second + proportion;
+  }
 }
 
 //边类型基本的定义

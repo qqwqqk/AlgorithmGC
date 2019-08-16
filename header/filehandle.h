@@ -1,5 +1,5 @@
 #pragma once
-#include "../datastructure/type.h"
+#include "type.h"
 #include <iostream>
 using namespace std;
 
@@ -37,14 +37,16 @@ Unipartite pretreatmentUnipartite(
   char nodetype = 'A'
 );
 
-void printProgress(
-  int iterationNumber = 0, 
-  int communityNumber = 0, 
-  double modularity = 0.0
+map<int,Node> getOverlapCommunity(
+  string name,
+  char intercept = 'A', 
+  int number = -1, 
+  bool connected = false, 
+  bool sequence = false,
+  char nodetype = 'A'
 );
 
 void printCommunity(
-  vector<double> modularityCache,
   map<int,Node> nodeCache,
   string name, 
   char intercept = 'A', 

@@ -1,2 +1,2 @@
-# AlgorithmGC
-Apply Gravity Coefficient to Community Detection
+# COPRA
+Community Overlap PRopagation Algorithm

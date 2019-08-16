@@ -1,4 +1,4 @@
-#include "filehandle.h"
+#include "../header/filehandle.h"
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
@@ -11,7 +11,7 @@ Bipartite getBipartite(string name, char intercept, int number, bool connected, 
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -91,8 +91,8 @@ Bipartite pretreatmentBipartite(string name, char intercept, int number, bool co
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string metapath = "metadata/" + name + ".txt";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string metapath = "dataset/metadata/" + name + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -370,7 +370,7 @@ Unipartite getUnipartite(string name, char intercept, int number, bool connected
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -443,7 +443,7 @@ Unipartite pretreatmentUnipartite(string name, char intercept, int number, bool 
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   Bipartite bipartiteNetwork = getBipartite(name, intercept, number, connected, sequence);
   map<int,Node> bipartiteNodesA = bipartiteNetwork.getNodesA();
@@ -543,36 +543,89 @@ Unipartite pretreatmentUnipartite(string name, char intercept, int number, bool 
   return unipartiteNetwork;
 }
 
-void printProgress(int iterationNumber, int communityNumber, double modularity){
-  cout << "IterationNumber:" << setw(4) << iterationNumber << '\t';
-  cout << "CommunityNumber:" << setw(4) << communityNumber << '\t';
-  cout << "Modularity:" << setw(9) << setiosflags(ios::fixed) << setprecision(5) << modularity << '\t' << endl;
-}
-
-void printCommunity(vector<double> modularityCache, map<int,Node> nodeCache,string name, char intercept, int number, bool connected, bool sequence, char nodetype){
+map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool connected, bool sequence, char nodetype){
   const string split = "_";
   const string _intercept(1, intercept);
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "resultdata/" + name + "_Result" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+
+  ifstream infile;
+  string line;
+  const char dilem1 = ':';
+  const char dilem2 = ' ';
+  map<int, Node> communityCache;
+  map<int, Node>::iterator iter;
+
+  //按行读取TXT文件，并解析
+  infile.open(resultpath, ios::in);
+  if(!infile){ 
+    cout<< "file open error!" <<endl;
+    exit(1);
+  }
+
+  while(!infile.eof()){
+    getline(infile, line);
+    int linePos = 0;
+    int lineSize = 0;
+    string cache;
+    vector<int> array;
+
+    for(int i = 0 ; i < line.size(); i++){
+      if(line[i] == dilem1 || line[i] == dilem2){
+        lineSize = i - linePos;
+        cache = line.substr(linePos, lineSize);
+        array.push_back(stoi(cache));
+        linePos = i+1;
+      }
+    }
+    cache = line.substr(linePos, line.size() - linePos);
+    if(cache.size()>0){ array.push_back(stoi(cache)); }
+
+    if(array.size() > 1){
+      iter = communityCache.find(array[0]);
+      if(iter == communityCache.end()){
+        Node item(array[0]);
+        map<int,double> tags;
+
+        for(int i=1; i<array.size(); i++){
+          tags.insert(pair<int,double>(array[i],1.0));
+        }
+
+        item.setTags(tags);
+        communityCache.insert(pair<int,Node>(array[0],item));
+      }
+    }
+  }
+  infile.close();
+
+  return communityCache;
+}
+
+void printCommunity(map<int,Node> nodeCache, string name, char intercept, int number, bool connected, bool sequence, char nodetype){
+  const string split = "_";
+  const string _intercept(1, intercept);
+  const string _number = number > 0 ? to_string(number) : "0";
+  const string _connected = connected ? "C" : "UC";
+  const string _sequence = sequence ? "S" : "US";
+  const string _nodetype(1, nodetype);
+  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   set<int> communityCache;
   //写入Bipartite，并输出到TXT文件
   ofstream outfile( resultpath , ios::out);
   if(!outfile){ cout<<"file open error!"<<endl; exit(1); } 
 
-  vector<double>::iterator modularityMax = std::max_element(begin(modularityCache), end(modularityCache));
-  int modularityIndex = distance(begin(modularityCache), modularityMax);
-
-  for(map<int, Node>::iterator iter_node = nodeCache.begin(); iter_node != nodeCache.end(); iter_node++){
-    int communityTag = iter_node->second.getCommunityTag(modularityIndex);
-    communityCache.insert(communityTag);
-    outfile << iter_node->first << '\t' << communityTag << '\n';
+  for(map<int,Node>::iterator iter = nodeCache.begin(); iter!=nodeCache.end(); iter++){
+    outfile << iter->first<<':';
+    map<int,double> list = iter->second.getTags();
+    for(map<int,double>::iterator item=list.begin(); item!=list.end(); item++){
+      outfile << item->first << ' ';
+    }
+    outfile << '\n';
   }
 
   outfile.close();
-
-  cout << "\nmodularityMax:\t" << *modularityMax << "\tcommunityNumber:\t" << communityCache.size() << endl;
 }
