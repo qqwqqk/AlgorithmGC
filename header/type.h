@@ -7,28 +7,24 @@
 #include <algorithm>
 using namespace std;
 
-struct Link{ 
-  int community_a, community_b; 
-  double gravitycoefficient; 
-};
-
 class Node{
   protected:
     int _id;
     int _degree;
-    map<int,double> _tags;
-    map<int,double> _caches;
+    vector<int> _tags;
+    vector<int> _caches;
   public:
     Node(int id = -1);
     ~Node(){};
     int getID();
     int getDegree();
-    map<int,double> getTags();
-    map<int,double> getCaches();
+    int getCurrentTag();
+    vector<int> getTags();
+    vector<int> getCaches();
     void addDegree();
-    void setTags(map<int,double> tags);
+    void addTag(int tag);
     void clrCaches();
-    void addCaches(int tag, double proportion);
+    void addCaches(int tag);
 };
 
 class Edge{

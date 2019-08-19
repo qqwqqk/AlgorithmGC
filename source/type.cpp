@@ -5,8 +5,8 @@ using std::string;
 //节点类型基本的定义
 Node::Node(int id){
   _id = id; _degree = 0;
-  map<int, double> temp;
-  _tags = temp; _caches = temp;
+  _tags = vector<int>{};
+  _caches = vector<int>{};
 }
 int Node::getID(){
   return _id;
@@ -14,28 +14,26 @@ int Node::getID(){
 int Node::getDegree(){
   return _degree;
 }
-map<int,double> Node::getTags(){
+int Node::getCurrentTag(){
+  return _tags.back();
+}
+vector<int> Node::getTags(){
   return _tags;
 };
-map<int,double> Node::getCaches(){
+vector<int> Node::getCaches(){
   return _caches;
 };
 void Node::addDegree(){
   _degree = _degree + 1;
 }
-void Node::setTags(map<int,double> tags){
-  _tags = tags;
+void Node::addTag(int tag){
+  _tags.push_back(tag);
 }
 void Node::clrCaches(){
   _caches.clear();
 }
-void Node::addCaches(int tag, double proportion){
-  map<int,double>::iterator iter = _caches.find(tag);
-  if(iter == _caches.end()){
-    _caches.insert(pair<int,double>(tag,proportion));
-  } else {
-    iter->second = iter->second + proportion;
-  }
+void Node::addCaches(int tag){
+  _caches.push_back(tag);
 }
 
 //边类型基本的定义

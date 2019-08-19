@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "header/filehandle.h"
-#include "header/copra.h"
+#include "header/slpa.h"
 
 using namespace std;
 
@@ -14,11 +14,9 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
-  const int termination = 2;                      //终止条件迭代次数
-  const int communitymax = 2;                     //单个节点最多隶属社区数目
-  const double threshold = 1.0 /  communitymax;   //阈值
+  const int termination = 5;            //终止条件迭代次数
+  const double threshold = 0.4;         //阈值
 
-  Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
 
   vector<Edge> edgeCache = UnipartiteNetwork.getEdges();            //投影网络边连接信息
@@ -32,7 +30,7 @@ int main()
     beforeNumber = calculationCommunityNumber(nodeCache);
 
     nodeCache = updateCommunityCaches(nodeCache, edgeCache);
-    nodeCache = updateCommunityTags(nodeCache, threshold);
+    nodeCache = updateCommunityTags(nodeCache);
 
     updatedNumber = calculationCommunityNumber(nodeCache);
 
@@ -40,6 +38,8 @@ int main()
     
     if(beforeNumber == updatedNumber){iteration++;} else {iteration = 0;}
   }
+
+  nodeCache = updateResult(nodeCache, threshold);
 
   printCommunity(nodeCache, name, intercept, number, connected, sequence, nodetype);
 
