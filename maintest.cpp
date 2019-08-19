@@ -21,10 +21,10 @@ int main()
   cout<<"community:"<<endl;
   for(map<int,Node>::iterator iter = CommunityResult.begin(); iter != CommunityResult.end(); iter++){
     cout<< iter->first<<":";
-    map<int,double> cache = iter->second.getTags();
-    for(map<int,double>::iterator item = cache.begin(); item != cache.end(); item++){
-      cout<< ' ' << item->first;
-      communityCache.insert(item->first);
+    vector<int> cache = iter->second.getTags();
+    for(vector<int>::iterator item = cache.begin(); item != cache.end(); item++){
+      cout<< ' ' << *item;
+      communityCache.insert(*item);
     }
     cout<< endl;
   }
@@ -37,7 +37,6 @@ int main()
   cout << "communityNumber:\t" << communityCache.size() << '\t';
   cout << "extendModularity:\t" << extendModularity << '\t';
   cout << "modularityOverlap:\t" << overlapModularity << endl;
-
 
   return 0;
 }

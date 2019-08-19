@@ -588,13 +588,11 @@ map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool 
       iter = communityCache.find(array[0]);
       if(iter == communityCache.end()){
         Node item(array[0]);
-        map<int,double> tags;
 
         for(int i=1; i<array.size(); i++){
-          tags.insert(pair<int,double>(array[i],1.0));
+          item.addTag(array[i]);
         }
 
-        item.setTags(tags);
         communityCache.insert(pair<int,Node>(array[0],item));
       }
     }
@@ -620,9 +618,9 @@ void printCommunity(map<int,Node> nodeCache, string name, char intercept, int nu
 
   for(map<int,Node>::iterator iter = nodeCache.begin(); iter!=nodeCache.end(); iter++){
     outfile << iter->first<<':';
-    map<int,double> list = iter->second.getTags();
-    for(map<int,double>::iterator item=list.begin(); item!=list.end(); item++){
-      outfile << item->first << ' ';
+    vector<int> list = iter->second.getCaches();
+    for(int i=0; i<list.size(); i++){
+      outfile << list[i] << ' ';
     }
     outfile << '\n';
   }

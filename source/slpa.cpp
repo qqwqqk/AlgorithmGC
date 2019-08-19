@@ -17,6 +17,7 @@ vector<int> findMode(vector<int> nums){
     map<int,int>::iterator iter = caches.find(nums[i]);
     if(iter == caches.end()){
       caches.insert(pair<int,int> (nums[i],1));
+      if(count < 2) { res.push_back(nums[i]);}
     } else {
       int tag = iter->second + 1;
       iter->second = tag;
@@ -101,6 +102,11 @@ map<int,Node> updateResult(map<int,Node> nodes, double threshold){
       if(count * threshold < iter_tag->second){
         iter->second.addCaches(iter_tag->first);
       }
+    }
+
+    if(iter->second.getCaches().size() < 1){
+      int temp = iter->second.getCurrentTag();
+      iter->second.addCaches(temp);
     }
   }
   return nodes;

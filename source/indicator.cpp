@@ -21,15 +21,15 @@ double calculationOverlapModularity(map<int,Node> nodes, vector<Edge> edges){
     nodes.find(edges[i].getNodeA())->second.addDegree();
     nodes.find(edges[i].getNodeB())->second.addDegree();
 
-    map<int,double> community_a = nodes.find(edges[i].getNodeA())->second.getTags();
-    map<int,double> community_b = nodes.find(edges[i].getNodeB())->second.getTags();
+    vector<int> community_a = nodes.find(edges[i].getNodeA())->second.getTags();
+    vector<int> community_b = nodes.find(edges[i].getNodeB())->second.getTags();
     set<int> community_ab;
 
-    for(map<int,double>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
-      community_ab.insert(item_a->first); 
+    for(vector<int>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
+      community_ab.insert(*item_a); 
     }
-    for(map<int,double>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
-      community_ab.insert(item_b->first); 
+    for(vector<int>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
+      community_ab.insert(*item_b);
     }
 
     if(community_a.size() + community_b.size() > community_ab.size()){
@@ -41,15 +41,15 @@ double calculationOverlapModularity(map<int,Node> nodes, vector<Edge> edges){
   //计算节点权
   for(map<int,Node>::iterator node_i = nodes.begin(); node_i != nodes.end(); node_i++ ){
     for(map<int,Node>::iterator node_j = nodes.begin(); node_j != nodes.end(); node_j++ ){
-      map<int,double> community_a = node_i->second.getTags();
-      map<int,double> community_b = node_j->second.getTags();
+      vector<int> community_a = node_i->second.getTags();
+      vector<int> community_b = node_j->second.getTags();
       set<int> community_ab;
 
-      for(map<int,double>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
-        community_ab.insert(item_a->first); 
+      for(vector<int>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
+        community_ab.insert(*item_a); 
       }
-      for(map<int,double>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
-        community_ab.insert(item_b->first); 
+      for(vector<int>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
+        community_ab.insert(*item_b); 
       }
 
       if(community_a.size() + community_b.size() > community_ab.size()){
@@ -80,15 +80,15 @@ double calculationExtendModularity(map<int, Node> nodes, vector<Edge> edges){
     nodes.find(edges[i].getNodeA())->second.addDegree();
     nodes.find(edges[i].getNodeB())->second.addDegree();
 
-    map<int,double> community_a = nodes.find(edges[i].getNodeA())->second.getTags();
-    map<int,double> community_b = nodes.find(edges[i].getNodeB())->second.getTags();
+    vector<int> community_a = nodes.find(edges[i].getNodeA())->second.getTags();
+    vector<int> community_b = nodes.find(edges[i].getNodeB())->second.getTags();
     set<int> community_ab;
 
-    for(map<int,double>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
-      community_ab.insert(item_a->first); 
+    for(vector<int>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
+      community_ab.insert(*item_a); 
     }
-    for(map<int,double>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
-      community_ab.insert(item_b->first); 
+    for(vector<int>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
+      community_ab.insert(*item_b); 
     }
 
     if(community_a.size() + community_b.size() > community_ab.size()){
@@ -100,15 +100,15 @@ double calculationExtendModularity(map<int, Node> nodes, vector<Edge> edges){
   //计算节点权
   for(map<int,Node>::iterator node_i = nodes.begin(); node_i != nodes.end(); node_i++ ){
     for(map<int,Node>::iterator node_j = nodes.begin(); node_j != nodes.end(); node_j++ ){
-      map<int,double> community_a = node_i->second.getTags();
-      map<int,double> community_b = node_j->second.getTags();
+      vector<int> community_a = node_i->second.getTags();
+      vector<int> community_b = node_j->second.getTags();
       set<int> community_ab;
 
-      for(map<int,double>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
-        community_ab.insert(item_a->first); 
+      for(vector<int>::iterator item_a = community_a.begin(); item_a != community_a.end(); item_a++){ 
+        community_ab.insert(*item_a); 
       }
-      for(map<int,double>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
-        community_ab.insert(item_b->first); 
+      for(vector<int>::iterator item_b = community_b.begin(); item_b != community_b.end(); item_b++){ 
+        community_ab.insert(*item_b); 
       }
 
       if(community_a.size() + community_b.size() > community_ab.size()){
