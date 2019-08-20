@@ -14,7 +14,7 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
-  const int termination = 8;             //终止条件迭代次数
+  const int termination = 99;            //最大迭代次数
   const double threshold = 0.4;          //阈值
 
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
@@ -36,6 +36,7 @@ int main()
 
     cout<<"communityNumber:"<<updatedNumber<<endl;
     
+    if(!communityChanged(nodeCache)){ break; }
     if(beforeNumber == updatedNumber){iteration++;} else {iteration = 0;}
   }
 

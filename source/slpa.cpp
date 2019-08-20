@@ -81,6 +81,19 @@ map<int,Node> updateCommunityTags(map<int,Node> nodes){
   return nodes;
 }
 
+bool communityChanged(map<int,Node> nodes){
+  map<int,Node>::iterator iter = nodes.begin();
+  if(iter->second.getTags().size() < 2){ return true; }
+
+  for(iter = nodes.begin(); iter!=nodes.end(); iter++){
+    vector<int> tags = iter->second.getTags();
+    const int length = tags.size();
+    if(tags[length - 1] != tags[length -2 ]) { return true; }
+  }
+
+  return false;
+}
+
 map<int,Node> updateResult(map<int,Node> nodes, double threshold){
   for(map<int,Node>::iterator iter = nodes.begin(); iter != nodes.end(); iter++){
     iter->second.clrCaches();
@@ -104,10 +117,13 @@ map<int,Node> updateResult(map<int,Node> nodes, double threshold){
       }
     }
 
-    if(iter->second.getCaches().size() < 1){
-      int temp = iter->second.getCurrentTag();
-      iter->second.addCaches(temp);
+    const int current = iter->second.getCurrentTag();
+    bool boolean = false;
+    vector<int> caches = iter->second.getCaches();
+    for(int i=0; i<caches.size(); i++){
+      if(caches[i] == current){ boolean = true; break;}
     }
+    if(!boolean){ iter->second.addCaches(current);}
   }
   return nodes;
 }
