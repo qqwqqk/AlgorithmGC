@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "header/filehandle.h"
-#include "header/slpa.h"
+#include "header/lfm.h"
 
 using namespace std;
 
@@ -14,8 +14,7 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
-  const int termination = 99;            //最大迭代次数
-  const double threshold = 0.4;          //阈值
+  const double alpha = 1.0;              //阿尔法系数
 
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
 
@@ -24,23 +23,24 @@ int main()
 
   nodeCache = initializationCommunityNode(nodeCache, edgeCache);    //初始化节点信息
 
-  int beforeNumber, updatedNumber, iteration = 0;
+  int seednode = -1;
+  int communityNumber = 1;
+  double communityPercentage = 0.0;
 
-  while(iteration < termination){
-    beforeNumber = calculationCommunityNumber(nodeCache);
+  while(1){
+    seednode = generateSeedNode(nodeCache);
 
-    nodeCache = updateCommunityCaches(nodeCache, edgeCache);
-    nodeCache = updateCommunityTags(nodeCache);
+    if(seednode == -1){ break; }                                    //循环终止条件，不存在未分配的节点
 
-    updatedNumber = calculationCommunityNumber(nodeCache);
+    set<int> communities = generateCommunity(seednode, alpha, nodeCache);
 
-    cout<<"communityNumber:"<<updatedNumber<<endl;
-    
-    if(!communityChanged(nodeCache)){ break; }
-    if(beforeNumber == updatedNumber){iteration++;} else {iteration = 0;}
+    nodeCache = updateNodeTags(communityNumber, communities, nodeCache);
+
+    communityNumber++;
+    communityPercentage = calculationCommunityPercentage(nodeCache);
+
+    cout << "communityNumber:" << communityNumber << "\t communityPercentage:" << communityPercentage << endl;
   }
-
-  nodeCache = updateResult(nodeCache, threshold);
 
   printCommunity(nodeCache, name, intercept, number, connected, sequence, nodetype);
 

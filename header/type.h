@@ -12,19 +12,17 @@ class Node{
     int _id;
     int _degree;
     vector<int> _tags;
-    vector<int> _caches;
+    vector<int> _contiguity;
   public:
     Node(int id = -1);
     ~Node(){};
     int getID();
     int getDegree();
-    int getCurrentTag();
     vector<int> getTags();
-    vector<int> getCaches();
+    vector<int> getContiguity();
     void addDegree();
     void addTag(int tag);
-    void clrCaches();
-    void addCaches(int tag);
+    void addContiguity(int tag);
 };
 
 class Edge{

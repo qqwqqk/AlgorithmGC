@@ -618,7 +618,7 @@ void printCommunity(map<int,Node> nodeCache, string name, char intercept, int nu
 
   for(map<int,Node>::iterator iter = nodeCache.begin(); iter!=nodeCache.end(); iter++){
     outfile << iter->first<<':';
-    vector<int> list = iter->second.getCaches();
+    vector<int> list = iter->second.getTags();
     for(int i=0; i<list.size(); i++){
       outfile << list[i] << ' ';
     }

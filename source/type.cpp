@@ -6,7 +6,7 @@ using std::string;
 Node::Node(int id){
   _id = id; _degree = 0;
   _tags = vector<int>{};
-  _caches = vector<int>{};
+  _contiguity = vector<int>{};
 }
 int Node::getID(){
   return _id;
@@ -14,26 +14,20 @@ int Node::getID(){
 int Node::getDegree(){
   return _degree;
 }
-int Node::getCurrentTag(){
-  return _tags.back();
-}
 vector<int> Node::getTags(){
   return _tags;
-};
-vector<int> Node::getCaches(){
-  return _caches;
-};
+}
+vector<int> Node::getContiguity(){
+  return _contiguity;
+}
 void Node::addDegree(){
   _degree = _degree + 1;
 }
 void Node::addTag(int tag){
   _tags.push_back(tag);
 }
-void Node::clrCaches(){
-  _caches.clear();
-}
-void Node::addCaches(int tag){
-  _caches.push_back(tag);
+void Node::addContiguity(int tag){
+  _contiguity.push_back(tag);
 }
 
 //边类型基本的定义
