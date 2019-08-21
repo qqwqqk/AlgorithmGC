@@ -14,7 +14,7 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
-  const int termination = 2;                      //终止条件迭代次数
+  const int termination = 99;                     //终止条件迭代次数
   const int communitymax = 2;                     //单个节点最多隶属社区数目
   const double threshold = 1.0 /  communitymax;   //阈值
 

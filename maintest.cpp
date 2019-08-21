@@ -38,6 +38,5 @@ int main()
   cout << "extendModularity:\t" << extendModularity << '\t';
   cout << "modularityOverlap:\t" << overlapModularity << endl;
 
-
   return 0;
 }
