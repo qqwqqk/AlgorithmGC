@@ -549,7 +549,8 @@ map<int,Node> getOverlapCommunity(string name, char intercept, int number, bool 
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string method = "OverlapGC";
+  const string resultpath = "dataset/resultdata/" + name + split  + method + split + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
