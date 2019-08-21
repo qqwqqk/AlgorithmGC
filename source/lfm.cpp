@@ -27,9 +27,6 @@ map<int,Node> initializationCommunityNode(map<int,Node> nodes, vector<Edge> edge
     nodes[node_a].addContiguity(node_b);
     nodes[node_b].addContiguity(node_a);
   }
-  for(map<int,Node>::iterator iter = nodes.begin(); iter!=nodes.end(); iter++){
-    iter->second.addTag(iter->first);  // iter->second.clrCaches();
-  }
   return nodes;
 }
 
@@ -51,7 +48,10 @@ set<int> generateCommunity(int seednode, double alpha, map<int,Node> nodes){
     neighborhood.clear();
     for(set<int>::iterator iter = tags.begin(); iter!=tags.end(); iter++){
       vector<int> lists = nodes[*iter].getContiguity();
-      for(int i=0; i<lists.size(); i++){ neighborhood.insert(lists[i]); }
+      for(int i=0; i<lists.size(); i++){
+        int tag_item = lists[i];
+        if(tags.count(tag_item) < 1){ neighborhood.insert(lists[i]); }
+      }
     }
 
     //计算能使fitness增加的节点列表
