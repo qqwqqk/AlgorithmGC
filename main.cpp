@@ -7,14 +7,14 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_MC";
-  char intercept = 'B';
-  int number = 800;
+  string name = "Metadata_AC";
+  char intercept = 'E';
+  int number = 99999;
   bool connected = true;
   bool sequence = true;
   char nodetype = 'A';
 
-  const double alpha = 1.0;              //阿尔法系数
+  const double alpha = 1;              //阿尔法系数
 
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
 

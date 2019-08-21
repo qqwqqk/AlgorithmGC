@@ -4,6 +4,11 @@
 #include <math.h>
 using namespace std;
 
+int generateRandomNumber(int min, int max){
+  srand(time(NULL));
+  return rand() % (max - min) + min;
+}
+
 double calculationFitness(double alpha, set<int> tags, map<int,Node> nodes){
   int k_in = 0, k_out = 0;
   for(set<int>::iterator iter = tags.begin(); iter!=tags.end(); iter++){
@@ -31,10 +36,17 @@ map<int,Node> initializationCommunityNode(map<int,Node> nodes, vector<Edge> edge
 }
 
 int generateSeedNode(map<int,Node> nodes){
+  vector<int> caches;
+  int tag = -1;
   for(map<int,Node>::iterator iter = nodes.begin(); iter!=nodes.end(); iter++){
-    if(iter->second.getTags().size() < 1){ return iter->first;}
+    if(iter->second.getTags().size() < 1){ caches.push_back(iter->first);}
   }
-  return -1;
+  int length = caches.size();
+  if(length > 0){
+    int index = generateRandomNumber(0, length);
+    tag = caches[index]; 
+  }
+  return tag;
 }
 
 set<int> generateCommunity(int seednode, double alpha, map<int,Node> nodes){
