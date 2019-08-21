@@ -35,11 +35,9 @@ int main()
   cout<<"calculation extend modularity:"<<endl;
   double extendModularity = calculationExtendModularity(CommunityResult, UnipartiteNetwork.getEdges());
 
-  cout << "\t communityNumber:\t" << communityCache.size();
-  cout << "\t extendModularity:\t" << extendModularity;
-  cout << "\t modularityOverlap:\t" << overlapModularity;
-  cout << endl;
-
+  cout << "communityNumber:\t" << communityCache.size() << '\t';
+  cout << "extendModularity:\t" << extendModularity << '\t';
+  cout << "modularityOverlap:\t" << overlapModularity << endl;
 
   return 0;
 }

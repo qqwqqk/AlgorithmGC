@@ -608,7 +608,8 @@ void printCommunity(map<int,Node> nodeCache, string name, char intercept, int nu
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "dataset/resultdata/" + name + "_OverlapResult" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string method = "OverlapGC";
+  const string resultpath = "dataset/resultdata/" + name + split  + method + split + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   set<int> communityCache;
   //写入Bipartite，并输出到TXT文件
