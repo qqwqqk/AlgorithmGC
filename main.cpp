@@ -8,12 +8,14 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_AC";
+  string name = "Metadata_MC";
   char intercept = 'E'; 
   int number = 99999;
   bool connected = true;
   bool sequence = true;
   char nodetype = 'A';
+
+  const int termination = 20;            //最大迭代次数
 
   Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
   Unipartite UnipartiteNetworkA = getUnipartite( name, intercept, number, connected, sequence, 'A');
@@ -66,7 +68,8 @@ int main()
 
   printProgress(modularityCache.size() - 1, communityNumber, modularity);     //输出初始信息
 
-  while(communityNumber > 1){
+  int iteration = 0;
+  while(communityNumber > 1 && iteration < termination){
     linkUpdate.clear();
     map<int, int> mergeList = calculationMergeList(linkCache);
   
@@ -103,6 +106,7 @@ int main()
     //更新当前社区数量以及模块度相关
     communityNumber = calculationCommunityNumber(nodeCache);
     modularity = calculationModularity(nodeCache, unipartiteEdgeCache);
+    if(modularity <= modularityCache.back()){ iteration++; } else { iteration = 0; }
     modularityCache.push_back(modularity);
 
     printProgress(modularityCache.size() - 1, communityNumber, modularity);     //输出合并进度
