@@ -22,11 +22,12 @@ Bipartite getBipartite(string name, char intercept, int number, bool connected, 
 
   //按行读取TXT文件，并解析
   infile.open(netpath, ios::in);
-  if(!infile){ 
-    cout<< "read from meta data" <<endl;
-    return  pretreatmentBipartite(name, intercept, number, connected, sequence);
+  if(!infile){
+    cout<< "init bipartite from meta data" <<endl;
+    pretreatmentBipartite(name, intercept, number, connected, sequence);
+    infile.open(netpath, ios::in);
   } else {
-    cout<< "read from net data" <<endl;
+    cout<< "read bipartite file from bipartite network" <<endl;
   }
 
   while(!infile.eof()){
@@ -103,7 +104,7 @@ Bipartite pretreatmentBipartite(string name, char intercept, int number, bool co
 
   //按行读取TXT文件，并解析
   infile.open(metapath, ios::in);
-  if(!infile){ cout<< "can't find meta file! "<<endl; exit(0); }
+  if(!infile){ cout<< "can't find meta file! "<< metapath <<endl; exit(1); }
   while(!infile.eof()){
     getline(infile, line);
     int linePos = 0;
@@ -382,10 +383,11 @@ Unipartite getUnipartite(string name, char intercept, int number, bool connected
   //按行读取TXT文件，并解析
   infile.open(unipartitepath, ios::in);
   if(!infile){ 
-    cout<< "read from bipartite data" <<endl;
-    return pretreatmentUnipartite(name, intercept, number, connected, sequence, nodetype);
+    cout << "init unipartite from bipartite data" << endl;
+    pretreatmentUnipartite(name, intercept, number, connected, sequence, nodetype);
+    infile.open(unipartitepath, ios::in);
   } else {
-    cout<< "read from unipartite data" <<endl;
+    cout<< "read unipartite file from unipartite network" <<endl;
   }
 
   while(!infile.eof()){
