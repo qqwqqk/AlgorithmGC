@@ -1,4 +1,4 @@
-#include "filehandle.h"
+#include "../header/filehandle.h"
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
@@ -11,7 +11,7 @@ Bipartite getBipartite(string name, char intercept, int number, bool connected, 
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -22,11 +22,12 @@ Bipartite getBipartite(string name, char intercept, int number, bool connected, 
 
   //按行读取TXT文件，并解析
   infile.open(netpath, ios::in);
-  if(!infile){ 
-    cout<< "read from meta data" <<endl;
-    return  pretreatmentBipartite(name, intercept, number, connected, sequence);
+  if(!infile){
+    cout<< "init bipartite from meta data" <<endl;
+    pretreatmentBipartite(name, intercept, number, connected, sequence);
+    infile.open(netpath, ios::in);
   } else {
-    cout<< "read from net data" <<endl;
+    cout<< "read bipartite file from bipartite network" <<endl;
   }
 
   while(!infile.eof()){
@@ -91,8 +92,8 @@ Bipartite pretreatmentBipartite(string name, char intercept, int number, bool co
   const string _number = number > 0 ? to_string(number) : "0";
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
-  const string metapath = "metadata/" + name + ".txt";
-  const string netpath = "netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string metapath = "dataset/metadata/" + name + ".txt";
+  const string netpath = "dataset/netdata/" + name + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -103,7 +104,7 @@ Bipartite pretreatmentBipartite(string name, char intercept, int number, bool co
 
   //按行读取TXT文件，并解析
   infile.open(metapath, ios::in);
-  if(!infile){ cout<< "can't find meta file! "<<endl; exit(0); }
+  if(!infile){ cout<< "can't find meta file! "<< metapath <<endl; exit(1); }
   while(!infile.eof()){
     getline(infile, line);
     int linePos = 0;
@@ -370,7 +371,7 @@ Unipartite getUnipartite(string name, char intercept, int number, bool connected
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   ifstream infile;
   string line;
@@ -382,10 +383,11 @@ Unipartite getUnipartite(string name, char intercept, int number, bool connected
   //按行读取TXT文件，并解析
   infile.open(unipartitepath, ios::in);
   if(!infile){ 
-    cout<< "read from bipartite data" <<endl;
-    return pretreatmentUnipartite(name, intercept, number, connected, sequence, nodetype);
+    cout << "init unipartite from bipartite data" << endl;
+    pretreatmentUnipartite(name, intercept, number, connected, sequence, nodetype);
+    infile.open(unipartitepath, ios::in);
   } else {
-    cout<< "read from unipartite data" <<endl;
+    cout<< "read unipartite file from unipartite network" <<endl;
   }
 
   while(!infile.eof()){
@@ -443,7 +445,7 @@ Unipartite pretreatmentUnipartite(string name, char intercept, int number, bool 
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1,nodetype);
-  const string unipartitepath = "netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string unipartitepath = "dataset/netdata/" + name + "_Single" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   Bipartite bipartiteNetwork = getBipartite(name, intercept, number, connected, sequence);
   map<int,Node> bipartiteNodesA = bipartiteNetwork.getNodesA();
@@ -556,7 +558,7 @@ void printCommunity(vector<double> modularityCache, map<int,Node> nodeCache,stri
   const string _connected = connected ? "C" : "UC";
   const string _sequence = sequence ? "S" : "US";
   const string _nodetype(1, nodetype);
-  const string resultpath = "resultdata/" + name + "_Result" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
+  const string resultpath = "dataset/resultdata/" + name + "_Result" + _nodetype + split + _intercept + _number + _connected + _sequence + ".txt";
 
   set<int> communityCache;
   //写入Bipartite，并输出到TXT文件

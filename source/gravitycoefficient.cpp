@@ -1,4 +1,4 @@
-#include "gravitycoefficient.h"
+#include "../header/gravitycoefficient.h"
 #include <cstdlib>
 #include <math.h>
 using namespace std;

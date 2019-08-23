@@ -1,5 +1,5 @@
 #pragma once
-#include "../datastructure/type.h"
+#include "type.h"
 #include <iostream>
 using namespace std;
 
