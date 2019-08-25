@@ -10,14 +10,34 @@
       "args": [
         "-g",
         "${workspaceFolder}/main.cpp",
-        "${workspaceFolder}/src/datastructure/*.cpp",
-        "${workspaceFolder}/src/pretreatment/*.cpp",
-        "${workspaceFolder}/src/algorithm/*.cpp",
+        "${workspaceFolder}/source/*.cpp",
         "-o",
         "${workspaceFolder}/compile/main.exe"
       ],
       "group": {
         "kind": "build",
+        "isDefault": true                          // 设为false可做到一个tasks.json配置多个编译指令，需要自己修改本文件，我这里不多提
+      },
+      "presentation": {
+        // Reveal the output only if unrecognized errors occur.
+        "reveal": "silent"
+      },
+      // Use the standard MS compiler pattern to detect errors, warnings and infos
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "compile of test",
+      "type": "shell",
+      "command": "g++",
+      "args": [
+        "-g",
+        "${workspaceFolder}/maintest.cpp",
+        "${workspaceFolder}/source/*.cpp",
+        "-o",
+        "${workspaceFolder}/compile/main.exe"
+      ],
+      "group": {
+        "kind": "test",
         "isDefault": true                          // 设为false可做到一个tasks.json配置多个编译指令，需要自己修改本文件，我这里不多提
       },
       "presentation": {
