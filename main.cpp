@@ -8,7 +8,7 @@ int main()
 {
   string name = "Metadata_WR";
   char intercept = 'E'; 
-  int number = 10000;
+  int number = 3000;
   bool connected = true;
   bool sequence = true;
   char nodetype = 'A';
