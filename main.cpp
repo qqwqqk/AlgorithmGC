@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_MC";
+  string name = "Metadata_AC";
   char intercept = 'E'; 
   int number = 99999;
   bool connected = true;
