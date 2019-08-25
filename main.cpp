@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_WR";
+  string name = "Metadata_PA";
   char intercept = 'E'; 
   int number = 5000;
   bool connected = true;
@@ -18,7 +18,7 @@ int main()
   Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
   
-  cout<<"init network"<<endl; exit(1);
+  // cout<<"init network"<<endl; exit(1);
 
   const vector<Edge> bipartiteEdgeCache = BipartiteNetwork.getEdges();        //计算GC用二分网络原始边连接信息
   const vector<Edge> unipartiteEdgeCache = UnipartiteNetwork.getEdges();      //计算模块度用投影网络边连接信息
