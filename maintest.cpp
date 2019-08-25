@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(){
-  const string code = "ML";
+  const string code = "WR";
   string readpath = "dataset/sourcedata/" + code + ".txt";
   string writepath = "dataset/metadata/Metadata_" + code + ".txt";
 
@@ -43,13 +43,13 @@ int main(){
     cache = line.substr(linePos, line.size() - linePos);
     if(cache.size()>0){ array.push_back(stoi(cache)); }
 
-    // if(array.size() > 1)
-    if(array.size() > 2 && array[2] > 4)
-    {
-      count++;
+    if(array.size() > 1){
       cout << count << ',' << array[0] << ',' << array[1] << '\n';
       outfile << count << ',' << array[0] << ',' << array[1] << '\n';
+      count++;
     }
+
+    if(count == 10000){ break; }
   }
   infile.close();
   outfile.close();
