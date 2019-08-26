@@ -13,12 +13,12 @@ GC Algorithm Results in Community Detection on Some Collaborative Networks
   </tr>
   <tr align="right">
     <td align="center">arXiv(AC)</td> <td align="center">651</td> <td align="center">1355</td>
-    <td> 50</td> <td>0.7631</td> <td>100</td> <td>0.7465</td>
+    <td> 50</td> <td>0.7631</td> <td> 98</td> <td>0.7446</td>
     <td> 89</td> <td>0.7604</td> <td> 86</td> <td>0.7658</td>
   </tr>
   <tr align="right">
     <td align="center">crime(MC)</td> <td align="center">754</td> <td align="center">2127</td> 
-    <td> 18</td> <td>0.8318</td> <td> 78</td> <td>0.8196</td> 
+    <td> 18</td> <td>0.8318</td> <td> 86</td> <td>0.8108</td> 
     <td> 83</td> <td>0.8047</td> <td> 56</td> <td>0.8476</td>
   </tr>
   <tr align="right">
@@ -28,7 +28,7 @@ GC Algorithm Results in Community Detection on Some Collaborative Networks
   </tr>
   <tr align="right">
     <td align="center">writers(WR)</td> <td align="center">1771</td> <td align="center">13502</td> 
-    <td> 29</td> <td>0.7419</td> <td>157</td> <td>0.7760</td> 
+    <td> 29</td> <td>0.7419</td> <td>158</td> <td>0.7757</td> 
     <td>167</td> <td>0.7727</td> <td>264</td> <td>0.7574</td>
   </tr>
 </table>
