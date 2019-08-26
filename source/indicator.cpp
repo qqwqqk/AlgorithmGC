@@ -105,11 +105,8 @@ double calculationExtendModularity(map<int, Node> nodes, vector<Edge> edges){
   double item_edges = 0, community_edges = 0;
   double item_nodes = 0, community_nodes = 0;
 
-  //初始节点度 计算边权
+  //计算边权
   for(int i=0; i<edges_number; i++){
-    nodes.find(edges[i].getNodeA())->second.addDegree();
-    nodes.find(edges[i].getNodeB())->second.addDegree();
-
     vector<int> community_a = nodes.find(edges[i].getNodeA())->second.getCommunityList();
     vector<int> community_b = nodes.find(edges[i].getNodeB())->second.getCommunityList();
     set<int> community_ab;

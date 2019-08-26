@@ -14,7 +14,7 @@ using namespace std;
 
 int main(){
   const string mothed = GC;
-  const string name = "WR";
+  const string name = "AC";
 
   cout << "Network File Loading..." << endl;
   vector<Edge> edgeCaches = getCommunityEdges( name );
