@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-  string name = "Metadata_WR";
+  string name = "Metadata_MC";
   char intercept = 'E'; 
   int number = 10000;
   bool connected = true;
@@ -30,14 +30,14 @@ int main()
     cout<< endl;
   }
 
-  cout<<"calculation overlap modularity:"<<endl;
-  double overlapModularity = calculationOverlapModularity(CommunityResult, UnipartiteNetwork.getEdges());
+  // cout<<"calculation overlap modularity:"<<endl;
+  // double overlapModularity = calculationOverlapModularity(CommunityResult, UnipartiteNetwork.getEdges());
   cout<<"calculation extend modularity:"<<endl;
   double extendModularity = calculationExtendModularity(CommunityResult, UnipartiteNetwork.getEdges());
 
   cout << "communityNumber:\t" << communityCache.size() << '\t';
-  cout << "extendModularity:\t" << extendModularity << '\t';
-  cout << "modularityOverlap:\t" << overlapModularity << endl;
+  cout << "extendModularity:\t" << extendModularity << '\n';
+  // cout << "modularityOverlap:\t" << overlapModularity << endl;
 
   return 0;
 }
