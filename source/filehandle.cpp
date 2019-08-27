@@ -6,15 +6,20 @@
 using namespace std;
 
 vector<Edge> getCommunityEdges( string name ){
-  const string edgepath = "dataset/unipartite/ProjectionTypeA_" + name +".txt";
+  const string edgepath = "dataset/unipartite/ProjectionTypeA_" + name + ".txt";
+  const string outpath = "result/gephi/EdgeList_" + name + ".csv";
 
   ifstream infile;
+  ofstream outfile;
   string line;
   const char dilem = ',';
   vector<Edge> edgeCache;
 
   infile.open(edgepath, ios::in);
   if(!infile){ cout<< "file open error!" << edgepath <<endl; exit(1); }
+
+  outfile.open(outpath, ios::out);
+  outfile<<"Source,Target,Type,Id,Weight\n";
 
   while(!infile.eof()){
     getline(infile, line);
@@ -38,9 +43,11 @@ vector<Edge> getCommunityEdges( string name ){
     if(array.size() > 2){
       Edge item(array[1],array[2]);
       edgeCache.push_back(item);
+      outfile << array[1] << ',' << array[2] << ",undirected," <<array[0] << ",1\n";
     }
   }
   infile.close();
+  outfile.close();
 
   return edgeCache;
 }
@@ -48,8 +55,10 @@ vector<Edge> getCommunityEdges( string name ){
 map<int,Node> getNonOverlapCommunity( string mothed, string name ){
   const string split = "_";
   const string resultpath = "result/non_overlap/NonOverlapResult_" + mothed +split + name +".txt";
+  const string outpath = "result/gephi/NonOverlapTag_" + mothed +split + name + ".csv";
 
   ifstream infile;
+  ofstream outfile;
   string line;
   const char dilem = '\t';
   map<int, Node> communityCache;
@@ -58,6 +67,9 @@ map<int,Node> getNonOverlapCommunity( string mothed, string name ){
   //按行读取TXT文件，并解析
   infile.open(resultpath, ios::in);
   if(!infile){ cout<< "file open error!" << resultpath <<endl; exit(1); }
+
+  outfile.open(outpath, ios::out);
+  outfile << "Id,Label," << mothed << "\n" ;
 
   while(!infile.eof()){
     getline(infile, line);
@@ -85,9 +97,11 @@ map<int,Node> getNonOverlapCommunity( string mothed, string name ){
         item.addListTag(array[1]);
         communityCache.insert(pair<int,Node>(array[0],item));
       }
+      outfile << array[0] <<",0," << array[1] << "\n" ;
     }
   }
   infile.close();
+  outfile.close();
 
   return communityCache;
 }
@@ -95,8 +109,10 @@ map<int,Node> getNonOverlapCommunity( string mothed, string name ){
 map<int,Node> getOverlapCommunity(string mothed, string name){
   const string split = "_";
   const string resultpath = "result/overlap/OverlapResult_" + mothed +split + name +".txt";
+  const string outpath = "result/gephi/OverlapTag_" + mothed +split + name + ".csv";
 
   ifstream infile;
+  ofstream outfile;
   string line;
   const char dilem1 = ':';
   const char dilem2 = ' ';
@@ -106,6 +122,9 @@ map<int,Node> getOverlapCommunity(string mothed, string name){
   //按行读取TXT文件，并解析
   infile.open(resultpath, ios::in);
   if(!infile){ cout<< "file open error!" << resultpath <<endl; exit(1); }
+
+  outfile.open(outpath, ios::out);
+  outfile << "Id,Label," << mothed << "\n" ;
 
   while(!infile.eof()){
     getline(infile, line);
@@ -135,9 +154,16 @@ map<int,Node> getOverlapCommunity(string mothed, string name){
         }
         communityCache.insert(pair<int,Node>(array[0],item));
       }
+      if(array.size() == 2){
+        outfile << array[0] <<",0," << array[1] << "\n" ;
+      } else {
+        int tag = -(array.size() - 1);
+        outfile << array[0] <<",0," << tag << "\n" ;
+      }
     }
   }
   infile.close();
+  outfile.close();
 
   return communityCache;
 }
