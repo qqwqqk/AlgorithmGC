@@ -13,6 +13,9 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
+  cout << "please input dataset name:"<<endl;
+  cin >> name;
+
   const int termination = 20;            //最大迭代次数
 
   Bipartite BipartiteNetwork = getBipartite( name, intercept, number, connected, sequence);
