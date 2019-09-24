@@ -15,6 +15,9 @@ int main()
   bool sequence = true;
   char nodetype = 'A';
 
+  cout<<"please input filename:"<<endl;
+  cin>>name;
+
   Unipartite UnipartiteNetwork = getUnipartite( name, intercept, number, connected, sequence, nodetype);
   map<int,Node> CommunityResult = getOverlapCommunity( name, intercept, number, connected, sequence, nodetype);
 
